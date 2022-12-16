@@ -27,15 +27,13 @@ RUN set -eux \
     zlib1g-dev \
   ; useradd -ms /bin/bash buildozer \
   ; cd /home/buildozer \
-  ; git clone https://codeberg.org/vanous/huafetcher.git \
+  ; git clone https://codeberg.org/rusi/huafetcher.git \
   ; chown -R buildozer:root /home/buildozer
 
 USER buildozer
 WORKDIR /home/buildozer/huafetcher
 
 RUN set -eux \
-  ; sed  -i -e '/android\.arch =/ s/arch = .*/archs = arm64-v8a/' buildozer.spec \
-  ; grep android.arch buildozer.spec \
   ; pip install \
     buildozer \
     Cython \
@@ -45,5 +43,3 @@ ENV PATH=/home/buildozer/.local/bin:$PATH
 
 RUN set -eux \
   ; buildozer -v android debug
-
-#  ; yes | buildozer -v android debug

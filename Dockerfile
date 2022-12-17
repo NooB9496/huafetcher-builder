@@ -25,21 +25,6 @@ RUN set -eux \
     unzip \
     zip \
     zlib1g-dev \
-  ; useradd -ms /bin/bash buildozer \
-  ; cd /home/buildozer \
-  ; git clone https://codeberg.org/rusi/huafetcher.git \
-  ; chown -R buildozer:root /home/buildozer
+  ; useradd -ms /bin/bash buildozer
 
 USER buildozer
-WORKDIR /home/buildozer/huafetcher
-
-RUN set -eux \
-  ; pip install \
-    buildozer \
-    Cython \
-    kivy
-
-ENV PATH=/home/buildozer/.local/bin:$PATH
-
-RUN set -eux \
-  ; buildozer -v android debug

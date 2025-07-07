@@ -1,12 +1,12 @@
-FROM --platform=linux/amd64 ubuntu
-#FROM ubuntu
+FROM ubuntu:latest
 
-# Disable download progress logging for buildozer
 ENV CI=1
+ENV PYTHONBREAKSYSTEMPACKAGES=1
+ENV PATH="/home/buildozer/venv/bin:$PATH"
 
 RUN set -eux \
-  ; apt-get update -yqq \
-  ; DEBIAN_FRONTEND=noninteractive apt-get install -yqq --no-install-recommends \
+  && apt-get update -yqq \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -yqq --no-install-recommends \
     autoconf \
     automake \
     autotools-dev \
@@ -21,10 +21,16 @@ RUN set -eux \
     python3 \
     python3-dev \
     python3-pip \
+    python3-venv \
     sed \
     unzip \
     zip \
     zlib1g-dev \
-  ; useradd -ms /bin/bash buildozer
+  && useradd -ms /bin/bash buildozer \
+  && python3 -m venv /home/buildozer/venv \
+  && /home/buildozer/venv/bin/pip install --upgrade pip setuptools wheel \
+  && /home/buildozer/venv/bin/pip install buildozer cython kivy \
+  && chown -R buildozer:buildozer /home/buildozer
 
 USER buildozer
+WORKDIR /home/buildozer

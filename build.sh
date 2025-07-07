@@ -9,7 +9,6 @@ docker run -it --platform linux/amd64 \
   huafetcher-builder \
   bash -c '
     source /home/buildozer/venv/bin/activate \
-    && pip install --break-system-packages buildozer Cython kivy \
     && cd /home/buildozer \
     && if [ -e huafetcher ]; then cd huafetcher; git checkout master; git reset --hard; git pull; else git clone https://codeberg.org/rusi/huafetcher.git; cd huafetcher; fi \
     && buildozer -v android debug \

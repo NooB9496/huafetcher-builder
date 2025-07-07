@@ -10,7 +10,6 @@ This project allows you to build a **huafetcher** Android app in an isolated env
 ## 🚀 How to build the APK
 
 1. **Clone the repository:**
-```bash
 git clone https://codeberg.org/rusi/huafetcher.git
 cd huafetcher
 Run the build script:

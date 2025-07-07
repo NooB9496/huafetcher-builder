@@ -1,36 +1,50 @@
 FROM ubuntu:latest
 
+# Ustawienia środowiska
 ENV CI=1
 ENV PYTHONBREAKSYSTEMPACKAGES=1
+ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/home/buildozer/venv/bin:$PATH"
 
+# Instalacja zależności systemowych i Python 3.11
 RUN set -eux \
   && apt-get update -yqq \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -yqq --no-install-recommends \
+  && apt-get install -yqq --no-install-recommends \
+    software-properties-common \
+    build-essential \
+    curl \
+    wget \
+    git \
+    unzip \
+    zip \
     autoconf \
     automake \
     autotools-dev \
-    build-essential \
     default-jdk \
-    git \
     libcrypto++-dev \
     libffi-dev \
     libltdl-dev \
     libssl-dev \
     libtool \
-    python3 \
-    python3-dev \
-    python3-pip \
-    python3-venv \
-    sed \
-    unzip \
-    zip \
     zlib1g-dev \
-  && useradd -ms /bin/bash buildozer \
-  && python3 -m venv /home/buildozer/venv \
-  && /home/buildozer/venv/bin/pip install --upgrade pip setuptools wheel \
-  && /home/buildozer/venv/bin/pip install buildozer cython kivy \
-  && chown -R buildozer:buildozer /home/buildozer
+    python3.11 \
+    python3.11-dev \
+    python3.11-venv \
+    python3-pip \
+    sed \
+  && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1
 
+# Dodanie użytkownika
+RUN useradd -ms /bin/bash buildozer
+
+# Tworzenie środowiska virtualenv
+RUN python3.11 -m venv /home/buildozer/venv \
+  && /home/buildozer/venv/bin/pip install --upgrade pip setuptools wheel \
+  && /home/buildozer/venv/bin/pip install \
+        cython==0.29.36 \
+        buildozer \
+        kivy
+
+# Przejście na użytkownika buildozer
 USER buildozer
 WORKDIR /home/buildozer

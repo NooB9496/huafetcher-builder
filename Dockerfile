@@ -5,7 +5,7 @@ ENV PYTHONBREAKSYSTEMPACKAGES=1
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/home/buildozer/venv/bin:$PATH"
 
-# Instalacja zależności systemowych i Buildozer + Kivy
+# Systemowe zależności
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     git \
@@ -25,16 +25,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Dodaj użytkownika
+# Tworzenie użytkownika
 RUN useradd -ms /bin/bash buildozer
-
-# Stwórz środowisko venv i zainstaluj wymagane pakiety
-RUN python -m venv /home/buildozer/venv \
-  && /home/buildozer/venv/bin/pip install --upgrade pip setuptools wheel \
-  && /home/buildozer/venv/bin/pip install \
-     cython==0.29.36 \
-     buildozer \
-     kivy
-
 USER buildozer
 WORKDIR /home/buildozer
+
+# Tworzenie venv i instalacja zależności jako buildozer (ważne!)
+RUN python3 -m venv /home/buildozer/venv && \
+    /home/buildozer/venv/bin/pip install --upgrade pip setuptools wheel && \
+    /home/buildozer/venv/bin/pip install \
+      cython==0.29.36 \
+      buildozer \
+      kivy
+

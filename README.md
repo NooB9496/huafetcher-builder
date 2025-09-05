@@ -16,12 +16,14 @@ Run the build script:
 ./build.sh
 
 Once done, you will find the APK file in:
-./build/huafetcher-0.23-armeabi-v7a_arm64-v8a-debug.apk
+./build/huafetcher-0.26-armeabi-v7a_arm64-v8a-debug.apk
 
 ## 📁 Directory structure
 huafetcher-builder/
 ├── build.sh # Main script to run the build process in Docker
+
 ├── Dockerfile # Docker image with Buildozer configuration + dependencies
+
 └── build/ # Directory of built APKs (mounted from Docker)
 
 ## 🔧 What does build.sh do?
